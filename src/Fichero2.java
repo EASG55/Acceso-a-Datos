@@ -24,6 +24,7 @@ public class Fichero2 {
             //Fichero3 -> Hagais una ruta con URI, creais el objeto, verificais que existe (else if),
             // si es un directorio o archivo (else if) (try-catch)
 
+
             //Fichero4 -> copia exacta del Fichero1, pero que mostreis dentro del if el contenido de la carpeta,
             // sus nombres (List(), length)
 
