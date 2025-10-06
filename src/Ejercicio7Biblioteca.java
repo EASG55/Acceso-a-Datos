@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Ejercicio7 {
+public class Ejercicio7Biblioteca {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
