@@ -3,17 +3,29 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Ejercicio7Biblioteca {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
 
+    private static final Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
         System.out.println("ORGANIZADOR DE BIBLIOTECA");
 
-        // Introducir el nombre de la categoria
+        //Organizar biblioteca
+        organizarBiblioteca();
+
+        //Verificar libro
+        verificarLibro();
+
+        sc.close();
+    }
+
+    // Función que organiza la biblioteca
+    public static void organizarBiblioteca() {
         System.out.print("Introduce el nombre de la categoría: ");
         String categoria = sc.nextLine();
+
         File carpetaCategoria = new File("C:\\biblioteca", categoria);
 
-        //si no existe categoria, crearla
+        //si categoria no existe, crearla
         if (!carpetaCategoria.exists()) {
             carpetaCategoria.mkdirs();
             System.out.println("Categoría '" + categoria + "' creada exitosamente");
@@ -21,7 +33,7 @@ public class Ejercicio7Biblioteca {
             System.out.println("La categoría '" + categoria + "' ya existe");
         }
 
-        // Catalogo.txt dentro de la categoría
+        //archivo catalogo.txt
         File catalogo = new File(carpetaCategoria, "catalogo.txt");
         try {
             if (catalogo.createNewFile()) {
@@ -32,23 +44,25 @@ public class Ejercicio7Biblioteca {
         } catch (IOException e) {
             System.out.println("Error al crear catalogo.txt");
         }
+    }
 
-        // Introducir categoria y nombre del libro
+    // Función que verifica si el libro existe o se crea
+    public static void verificarLibro() {
         System.out.println();
         System.out.print("Introduce la categoría del libro: ");
         String categoriaLibro = sc.nextLine();
         System.out.print("Introduce el nombre del libro: ");
         String nombreLibro = sc.nextLine();
 
+        //si carpeta no exisste, crearla
         File carpetaLibro = new File("C:\\biblioteca", categoriaLibro);
-        //si no existe categoria introducida, crearla
         if (!carpetaLibro.exists()) {
             carpetaLibro.mkdirs();
         }
 
         File libro = new File(carpetaLibro, nombreLibro);
 
-        //si libro no existe, preguntar si crearlo o no
+        //si libro existe, dar el tamaño. Sino, preguntar si se crea o no
         if (libro.exists()) {
             System.out.println("El libro existe en: " + libro.getAbsolutePath());
             System.out.println("Tamaño: " + libro.length() + " bytes");
@@ -68,7 +82,5 @@ public class Ejercicio7Biblioteca {
                 }
             }
         }
-
-        sc.close();
     }
 }
