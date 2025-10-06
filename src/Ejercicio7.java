@@ -58,7 +58,7 @@ public class Ejercicio7 {
                         System.out.println("No se pudo crear el libro.");
                     }
                 } catch (IOException e) {
-                    System.out.println("Error al crear el libro.");
+                    System.out.println("Error al crear el libro");
                 }
             }
         }
