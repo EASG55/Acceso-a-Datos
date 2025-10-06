@@ -8,10 +8,12 @@ public class Ejercicio7Biblioteca {
 
         System.out.println("ORGANIZADOR DE BIBLIOTECA");
 
+        // Introducir el nombre de la categoria
         System.out.print("Introduce el nombre de la categoría: ");
         String categoria = sc.nextLine();
         File carpetaCategoria = new File("C:\\biblioteca", categoria);
 
+        //si no existe categoria, crearla
         if (!carpetaCategoria.exists()) {
             carpetaCategoria.mkdirs();
             System.out.println("Categoría '" + categoria + "' creada exitosamente");
@@ -19,6 +21,7 @@ public class Ejercicio7Biblioteca {
             System.out.println("La categoría '" + categoria + "' ya existe");
         }
 
+        // Catalogo.txt dentro de la categoría
         File catalogo = new File(carpetaCategoria, "catalogo.txt");
         try {
             if (catalogo.createNewFile()) {
@@ -30,6 +33,7 @@ public class Ejercicio7Biblioteca {
             System.out.println("Error al crear catalogo.txt");
         }
 
+        // Introducir categoria y nombre del libro
         System.out.println();
         System.out.print("Introduce la categoría del libro: ");
         String categoriaLibro = sc.nextLine();
@@ -37,12 +41,14 @@ public class Ejercicio7Biblioteca {
         String nombreLibro = sc.nextLine();
 
         File carpetaLibro = new File("C:\\biblioteca", categoriaLibro);
+        //si no existe categoria introducida, crearla
         if (!carpetaLibro.exists()) {
             carpetaLibro.mkdirs();
         }
 
         File libro = new File(carpetaLibro, nombreLibro);
 
+        //si libro no existe, preguntar si crearlo o no
         if (libro.exists()) {
             System.out.println("El libro existe en: " + libro.getAbsolutePath());
             System.out.println("Tamaño: " + libro.length() + " bytes");
@@ -58,7 +64,7 @@ public class Ejercicio7Biblioteca {
                         System.out.println("No se pudo crear el libro.");
                     }
                 } catch (IOException e) {
-                    System.out.println("Error al crear el libro. ");
+                    System.out.println("Error al crear el libro.");
                 }
             }
         }
