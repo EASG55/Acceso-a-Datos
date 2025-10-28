@@ -4,83 +4,123 @@ import java.util.Scanner;
 
 public class Ejercicio7Biblioteca {
 
+    // Scanner global para la lectura de datos desde la consola
     private static final Scanner sc = new Scanner(System.in);
+
+    // Carpeta base donde se almacenarán las categorías y los libros
+    private static final String CARPETA = "C:\\biblioteca";
 
     public static void main(String[] args) {
         System.out.println("ORGANIZADOR DE BIBLIOTECA");
 
-        //Organizar biblioteca
-        organizarBiblioteca();
+        try {
+            // crear o verificar una categoría
+            organizarBiblioteca();
 
-        //Verificar libro
-        verificarLibro();
+            // verificar o crear un libro dentro de una categoría
+            verificarLibro();
 
-        sc.close();
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error inesperado: " + e.getMessage());
+        }
+            sc.close();
+
     }
 
-    // Función que organiza la biblioteca
+
+     //Este metodo permite crear una categoría dentro de la carpeta base "C:\\biblioteca".
+     //También crea (si no existe) un archivo "catalogo.txt" dentro de dicha categoría.
+
     public static void organizarBiblioteca() {
         System.out.print("Introduce el nombre de la categoría: ");
-        String categoria = sc.nextLine();
+        String categoria = sc.nextLine().trim();
 
-        File carpetaCategoria = new File("C:\\biblioteca", categoria);
-
-        //si categoria no existe, crearla
-        if (!carpetaCategoria.exists()) {
-            carpetaCategoria.mkdirs();
-            System.out.println("Categoría '" + categoria + "' creada exitosamente");
-        } else {
-            System.out.println("La categoría '" + categoria + "' ya existe");
+        // Validación básica: no se permite un nombre vacío
+        if (categoria.isEmpty()) {
+            System.out.println("Error: el nombre de la categoría no puede estar vacío.");
+            return;
         }
 
-        //archivo catalogo.txt
-        File catalogo = new File(carpetaCategoria, "catalogo.txt");
+        // Se crea un objeto File que representa la ruta de la categoría
+        File carpetaCategoria = new File(CARPETA, categoria);
+
         try {
+            // Si la carpeta no existe, se crea (puede incluir subdirectorios)
+            if (!carpetaCategoria.exists()) {
+                carpetaCategoria.mkdirs();
+                System.out.println("Categoría '" + categoria + "' creada exitosamente.");
+            } else {
+                System.out.println("La categoría '" + categoria + "' ya existe.");
+            }
+
+            // Se crea (si no existe) el archivo "catalogo.txt" dentro de la categoría
+            File catalogo = new File(carpetaCategoria, "catalogo.txt");
+
             if (catalogo.createNewFile()) {
                 System.out.println("Catálogo creado en: " + catalogo.getAbsolutePath());
             } else {
                 System.out.println("El catálogo ya existe en: " + catalogo.getAbsolutePath());
             }
+
         } catch (IOException e) {
-            System.out.println("Error al crear catalogo.txt");
+            System.out.println("Error de E/S al crear el catálogo: " + e.getMessage());
         }
     }
 
-    // Función que verifica si el libro existe o se crea
+
+     //Metodo que comprueba si un libro existe dentro de una categoría específica.
+     //Si la categoría no existe, la crea automáticamente.
+     //Si el libro no existe, ofrece la opción de crearlo.
+
     public static void verificarLibro() {
         System.out.println();
         System.out.print("Introduce la categoría del libro: ");
-        String categoriaLibro = sc.nextLine();
-        System.out.print("Introduce el nombre del libro: ");
-        String nombreLibro = sc.nextLine();
+        String categoriaLibro = sc.nextLine().trim();
 
-        //si carpeta no exisste, crearla
-        File carpetaLibro = new File("C:\\biblioteca", categoriaLibro);
-        if (!carpetaLibro.exists()) {
-            carpetaLibro.mkdirs();
+        System.out.print("Introduce el nombre del libro: ");
+        String nombreLibro = sc.nextLine().trim();
+
+        // Validación básica: los campos no pueden estar vacíos
+        if (categoriaLibro.isEmpty() || nombreLibro.isEmpty()) {
+            System.out.println("Error: ni la categoría ni el nombre del libro pueden estar vacíos.");
+            return;
         }
 
-        File libro = new File(carpetaLibro, nombreLibro);
+        // Carpeta donde debería encontrarse el libro
+        File carpetaLibro = new File(CARPETA, categoriaLibro);
 
-        //si libro existe, dar el tamaño. Sino, preguntar si se crea o no
-        if (libro.exists()) {
-            System.out.println("El libro existe en: " + libro.getAbsolutePath());
-            System.out.println("Tamaño: " + libro.length() + " bytes");
-        } else {
-            System.out.println("El libro no existe en: " + libro.getAbsolutePath());
-            System.out.print("¿Quieres crear el libro? (s/n): ");
-            String resp = sc.nextLine();
-            if (resp.equalsIgnoreCase("s")) {
-                try {
+        try {
+            // Si la categoría no existe, se crea automáticamente
+            if (!carpetaLibro.exists()) {
+                carpetaLibro.mkdirs();
+                System.out.println("Categoría '" + categoriaLibro + "' creada automáticamente.");
+            }
+
+            // Archivo que representa al libro
+            File libro = new File(carpetaLibro, nombreLibro);
+
+            if (libro.exists()) {
+                // Si el libro existe, se muestra su ruta y tamaño
+                System.out.println("El libro existe en: " + libro.getAbsolutePath());
+                System.out.println("Tamaño: " + libro.length() + " bytes");
+            } else {
+                // Si no existe, se pregunta al usuario si desea crearlo
+                System.out.println("El libro no existe en: " + libro.getAbsolutePath());
+                System.out.print("¿Quieres crear el libro? (s/n): ");
+                String resp = sc.nextLine().trim();
+
+                // Si el usuario responde "s", se crea el archivo vacío
+                if (resp.equalsIgnoreCase("s")) {
                     if (libro.createNewFile()) {
                         System.out.println("Libro creado exitosamente en: " + libro.getAbsolutePath());
                     } else {
-                        System.out.println("No se pudo crear el libro.");
+                        System.out.println("No se pudo crear el libro (ya existe o error desconocido).");
                     }
-                } catch (IOException e) {
-                    System.out.println("Error al crear el libro.");
                 }
             }
+
+        } catch (IOException e) {
+            System.out.println("Error de E/S al crear o acceder al libro: " + e.getMessage());
         }
     }
 }
