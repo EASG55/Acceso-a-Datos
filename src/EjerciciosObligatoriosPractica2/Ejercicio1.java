@@ -1,4 +1,4 @@
-package EjerciciosObligatorios;
+package EjerciciosObligatoriosPractica2;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
